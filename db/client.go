@@ -22,16 +22,18 @@ func (d *Dao) StoreUsedLicenses(license string) error {
 	var res *gorm.DB
 	db := d.DB.Table("used_licenses")
 
+	existing_item := models.Used_licenses{}
 	// Check if the database already contains that license
-	if db.Where("license = ?", license).RecordNotFound() {
+	if db.Where("license = ?", license).Take(&existing_item).RecordNotFound() {
 		res = db.Create(l)
-
+		
 		if res.Error != nil {
 			log.Error(res.Error)
 			return res.Error
+		} else {
+			log.Infof("Inserted %s in the used_licenses table\n", license)
 		}
 	}
-
 	return nil
 }
 
