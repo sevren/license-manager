@@ -46,6 +46,7 @@ The REST endpoint is served on http://localhost:8080/
 
 * POST /{user}
 * POST /{user}/licenses
+* GET /usedlicenses
 
 The endpoints will attempt to autenticate the user from the database as the request comes through. 
 
@@ -56,6 +57,31 @@ With the correct password the user will get the licenese they have attached to t
 If the microservice is running with out a connection to rabbitMQ the licenses will be generated with the challenge v1 base64 code. 
 
 If the microservice is running with the connection to rabbitMQ then the licenses will be generated the challenge 3  hashid code using a salt of the username:license
+
+## Regarding the used licenses endpoint
+
+You can make a GET request toward the database to check the used licenses
+
+`curl http://localhost:8080/usedlicenses`
+
+Produces output similar to the following if there is licenses
+
+```json
+{
+    "licenses": [
+        "B5K4A6Q0yJKKcQYULahQ83nMZeVo8N",
+        "N2YPE6lO9J11IaYiOxIJv31aL5WzKg"
+    ]
+}
+```
+
+and the following if there is no licenses
+
+```json
+{
+    "licenses": []
+}
+```
 
 ## Swagger ui
 

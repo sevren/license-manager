@@ -72,3 +72,17 @@ func (store *Dao) HandleLicenses(w http.ResponseWriter, r *http.Request) {
 
 	render.JSON(w, r, LicenseResp{l})
 }
+
+func (store *Dao) HandleUsedLicenses(w http.ResponseWriter, r *http.Request) {
+
+	// Get the licenses from the SQL lite database given by the authenticated user
+	licenseRefs, err := store.GetUsedLicenses()
+	if err != nil {
+		errPayload := ErrorPayload{ErrorResponse{Code: http.StatusOK, Message: err.Error()}}
+		render.Status(r, http.StatusOK)
+		render.JSON(w, r, errPayload)
+		return
+	}
+
+	render.JSON(w, r, LicenseResp{licenseRefs})
+}

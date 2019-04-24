@@ -62,4 +62,18 @@ paths:
                 type: object
         default:
           description: Unexpected error
+  /usedlicenses:
+    get:
+      produces:
+        - application/json
+      summary: Retrieves the used licenses
+      responses:
+        '200':
+          description: List of used licenses
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Unexpected error
   

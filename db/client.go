@@ -26,7 +26,7 @@ func (d *Dao) StoreUsedLicenses(license string) error {
 	// Check if the database already contains that license
 	if db.Where("license = ?", license).Take(&existing_item).RecordNotFound() {
 		res = db.Create(l)
-		
+
 		if res.Error != nil {
 			log.Error(res.Error)
 			return res.Error
@@ -44,4 +44,19 @@ func (d *Dao) GetLicenses(user string) ([]string, error) {
 		return nil, errors.New("User: " + user + "has no licenses")
 	}
 	return u.Lics, nil
+}
+
+//GetLicenses - Retrieves the Users licenses from the database
+func (d *Dao) GetUsedLicenses() ([]string, error) {
+	l := []models.Used_licenses{}
+	db := d.DB.Table("used_licenses")
+	if err := db.Find(&l).Error; err != nil {
+		return nil, errors.New("No licenses used")
+	}
+	var usedLicenses = []string{}
+	for _, license := range l {
+		usedLicenses = append(usedLicenses, license.License)
+	}
+
+	return usedLicenses, nil
 }

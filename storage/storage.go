@@ -9,7 +9,9 @@ import (
 type ItemStore interface {
 	StoreUsedLicenses(string) error
 	GetLicenses(string) ([]string, error)
+	GetUsedLicenses() ([]string, error)
 
+	HandleUsedLicenses(http.ResponseWriter, *http.Request)
 	HandleLicenses(http.ResponseWriter, *http.Request)
 	AuthUser(http.Handler) http.Handler
 }

@@ -45,6 +45,9 @@ func Routes(store storage.ItemStore, challenge3features bool) (*chi.Mux, error) 
 			r.Post("/", store.HandleLicenses)
 		})
 	})
+	r.Route("/usedlicenses", func(r chi.Router) {
+		r.Get("/", store.HandleUsedLicenses)
+	})
 
 	return r, nil
 }
@@ -58,7 +61,7 @@ func handleUser(w http.ResponseWriter, r *http.Request) {
 func corsConfig() *cors.Cors {
 	return cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"POST", "OPTIONS"},
+		AllowedMethods:   []string{"POST", "GET", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Content-Type", "X-CSRF-Token", "Cache-Control", "X-Requested-With"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: true,
